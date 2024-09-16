@@ -1,0 +1,244 @@
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  background-color: #e2eafc;
+  color: #333;
+  line-height: 1.6;
+}
+
+.title {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 32px;
+  color: #333;
+}
+
+/* Flexbox Container */
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 1200px;
+  margin: 30px auto;
+  gap: 20px;
+}
+
+/* Left Section (Form) */
+.left-section {
+  flex: 1;
+}
+
+/* Right Section (Students List) */
+.right-section {
+  flex: 1;
+}
+
+/* Form Styling */
+.form {
+  margin-bottom: 30px;
+}
+
+.form-title {
+  border-left: 5px solid #5a67d8;
+  padding-left: 10px;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #f7f9fc;
+  transition: border 0.3s ease;
+  color: #1a1a1d;
+}
+
+.input:focus {
+  border-color: #5a67d8;
+  outline: none;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #5a67d8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #434190;
+}
+
+/* Students List */
+.students-list-container {
+  margin-top: 0;
+}
+
+.students-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.student-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #f4f9ff;
+  border-bottom: 1px solid #ddd;
+  align-items: center;
+}
+
+.student-row:nth-child(even) {
+  background-color: #e0ebff;
+}
+
+.column-title {
+  font-weight: bold;
+  font-size: 18px;
+  text-align: left;
+}
+
+.student-name, .student-seatNumber {
+  width: 45%;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .student-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
+/* Search Results Container */
+.student-results {
+  margin-top: 20px;
+}
+
+/* Results Title */
+.results-title {
+  font-size: 22px;
+  color: #333;
+  border-bottom: 2px solid #5a67d8;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+}
+
+/* Individual Student Item */
+.student-item {
+  background-color: #f7f9fc; /* Light background */
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  transition: box-shadow 0.3s ease;
+}
+
+/* Hover effect for student item */
+.student-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Student Header */
+.student-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* Ensures it wraps on smaller screens */
+  margin-bottom: 10px;
+}
+
+/* Student Info */
+.student-info {
+  font-size: 16px;
+  color: #333;
+  margin: 5px 0;
+  width: 100%; /* Ensure each info block is on its own line on smaller screens */
+}
+
+.student-info:nth-child(odd) {
+  font-weight: bold; /* Bolder text for key info like Name, Seat Number */
+}
+
+/* Student Details Section */
+.student-details {
+  margin-top: 10px;
+}
+
+/* Payment History Title */
+.payment-history-title {
+  color: #5a67d8;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Payment Info */
+.payment-info {
+  font-size: 16px;
+  color: #666;
+  margin: 3px 0;
+}
+
+/* Close Button */
+.close-button {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-left: auto;
+  display: block; /* Positioned below the content */
+  transition: color 0.3s ease;
+}
+
+/* Hover effect for close button */
+.close-button:hover {
+  color: #d9534f; /* Darker red */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .student-header {
+    flex-direction: column; /* Stack student details vertically on mobile */
+    align-items: flex-start;
+  }
+
+  .student-info {
+    width: 100%;
+  }
+
+  .results-title {
+    font-size: 20px; /* Slightly smaller title for mobile */
+  }
+
+  .payment-history-title {
+    font-size: 16px;
+  }
+}
+
+
+
+
