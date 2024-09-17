@@ -12,14 +12,12 @@ const app = express();
 //     origin: process.env.FRONTEND_URL || "http://localhost:5173", // Replace with your frontend URL
 //   })
 // );
-
-
-// Allow all origins
-app.use(cors());
-// Allow specific origin(s)
 app.use(cors({
-  origin: 'https://library-frontend-six-delta.vercel.app/'
+  origin: 'https://library-frontend-six-delta.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
+
 app.use(bodyParser.json());
 
 // MongoDB connection
