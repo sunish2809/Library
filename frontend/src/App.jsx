@@ -2,6 +2,8 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+const API_URL = "https://library-swart-beta.vercel.app";
+
 const App = () => {
   const [studentsList, setStudentsList] = useState([]);
   // State for POST request (adding a student)
@@ -59,10 +61,7 @@ const App = () => {
   const addStudent = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/students",
-        studentData
-      );
+      const response = await axios.post(`${API_URL}/api/students`, studentData);
       alert(response.data.message);
       setStudentData({
         name: "",
@@ -80,9 +79,7 @@ const App = () => {
   const searchStudentByName = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/students/name/${searchName}`
-      );
+      const response = await axios.get(`${API_URL}/api/students/name/${searchName}`);
       setStudents(response.data);
       setSearchName("");
     } catch (error) {
@@ -95,12 +92,9 @@ const App = () => {
   const updatePayment = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(
-        `http://localhost:3000/api/students/payment/seat/${paymentUpdate.seatNumber}`,
-        {
-          amountPaid: paymentUpdate.amountPaid,
-        }
-      );
+      const response = await axios.put(`${API_URL}/api/students/payment/seat/${paymentUpdate.seatNumber}`, {
+        amountPaid: paymentUpdate.amountPaid,
+      });
       alert(response.data.message);
 
       setPaymentUpdate({
@@ -116,9 +110,7 @@ const App = () => {
   const deleteStudent = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(
-        `http://localhost:3000/api/students/${deleteData.name}/${deleteData.seatNumber}`
-      );
+      const response = await axios.delete(`${API_URL}/api/students/${deleteData.name}/${deleteData.seatNumber}`);
       alert(response.data.message);
       setDeleteData({
         name: "",
@@ -138,7 +130,7 @@ const App = () => {
   useEffect(() => {
     // Fetch students names and seat numbers when the component mounts
     axios
-      .get("http://localhost:3000/api/students/all")
+      .get(`${API_URL}/api/students/all`)
       .then((response) => {
         setStudentsList(response.data); // Set the retrieved data to the studentsList state
       })
@@ -213,45 +205,44 @@ const App = () => {
               </button>
             </form>
 
-
-          {/* Display searched students */}
-          {students.length > 0 && (
-          <div className="student-results">
-            <h3 className="results-title">Search Results:</h3>
-            {students.map((student) => (
-              <div key={student._id} className="student-item">
-                <div className="student-header">
-                  <p className="student-info">Name: {student.name}</p>
-                  <p className="student-info">
-                    Seat Number: {student.seatNumber}
-                  </p>
-                  <p className="student-info">
-                    Mobile Number: {student.mobileNumber}
-                  </p>
-                  {/* <button className="close-button" onClick={() => closeStudentDetails(student._id)}>
-                    &#10005; 
-                  </button> */}
-                </div>
-                <div className="student-details">
-                  <h4 className="payment-history-title">Payment History:</h4>
-                  {student.paymentHistory.map((payment, index) => (
-                    <p key={index} className="payment-info">
-                      ₹{payment.amountPaid} (Paid on:{" "}
-                      {new Date(payment.paymentDate).toLocaleDateString()})
-                    </p>
-                  ))}
-                </div>
-                <button
-                  className="close-button"
-                  onClick={() => closeStudentDetails(student._id)}
-                >
-                  &#10005;
-                </button>
+            {/* Display searched students */}
+            {students.length > 0 && (
+              <div className="student-results">
+                <h3 className="results-title">Search Results:</h3>
+                {students.map((student) => (
+                  <div key={student._id} className="student-item">
+                    <div className="student-header">
+                      <p className="student-info">Name: {student.name}</p>
+                      <p className="student-info">
+                        Seat Number: {student.seatNumber}
+                      </p>
+                      <p className="student-info">
+                        Mobile Number: {student.mobileNumber}
+                      </p>
+                      {/* <button className="close-button" onClick={() => closeStudentDetails(student._id)}>
+                        &#10005; 
+                      </button> */}
+                    </div>
+                    <div className="student-details">
+                      <h4 className="payment-history-title">Payment History:</h4>
+                      {student.paymentHistory.map((payment, index) => (
+                        <p key={index} className="payment-info">
+                          ₹{payment.amountPaid} (Paid on:{" "}
+                          {new Date(payment.paymentDate).toLocaleDateString()})
+                        </p>
+                      ))}
+                    </div>
+                    <button
+                      className="close-button"
+                      onClick={() => closeStudentDetails(student._id)}
+                    >
+                      &#10005;
+                    </button>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
-  
+            )}
+
             {/* Form to update payment history */}
             <form className="form update-payment-form" onSubmit={updatePayment}>
               <h2 className="form-title">Update Payment</h2>
@@ -277,7 +268,7 @@ const App = () => {
                 Update Payment
               </button>
             </form>
-  
+
             {/* Form to delete a student */}
             <form className="form delete-student-form" onSubmit={deleteStudent}>
               <h2 className="form-title">Delete Student</h2>
@@ -305,7 +296,7 @@ const App = () => {
             </form>
           </div>
         </div>
-  
+
         {/* Right section: Students List */}
         <div className="right-section">
           <div className="students-list-container">
@@ -327,7 +318,7 @@ const App = () => {
       </div>
     </div>
   );
-  
 };
 
 export default App;
+
