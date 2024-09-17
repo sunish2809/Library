@@ -6,12 +6,20 @@ require("dotenv").config();
 
 // Initialize the app
 const app = express();
-app.use(cors()); // This allows all origins by default
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173", // Replace with your frontend URL
-  })
-);
+// app.use(cors()); // This allows all origins by default
+// app.use(
+//   cors({
+//     origin: process.env.FRONTEND_URL || "http://localhost:5173", // Replace with your frontend URL
+//   })
+// );
+
+
+// Allow all origins
+app.use(cors());
+// Allow specific origin(s)
+app.use(cors({
+  origin: 'https://library-frontend-six-delta.vercel.app/'
+}));
 app.use(bodyParser.json());
 
 // MongoDB connection
