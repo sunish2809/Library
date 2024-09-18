@@ -7,16 +7,26 @@ require("dotenv").config();
 // Initialize the app
 const app = express();
 app.use(cors()); // This allows all origins by default
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "https://library-frontend-six-delta.vercel.app" // Add your development URL if needed
+];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "https://library-frontend-six-delta.vercel.app/", // Replace with your frontend URL
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
   })
 );
-// app.use(cors({
-//   origin: 'https://library-frontend-six-delta.vercel.app',
-//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//   credentials: true
-// }));
 
 app.use(bodyParser.json());
 
@@ -44,16 +54,16 @@ const Student = mongoose.model("Student", studentSchema);
 
 // POST route to add a student
 app.post("/api/students", async (req, res) => {
-  const { name, seatNumber, mobileNumber, paymentHistory } = req.body;
+  let { name, seatNumber, mobileNumber, paymentHistory } = req.body;
+
+  name = name.trim().replace(/\s+/g, " ");
+  seatNumber = seatNumber.trim().replace(/\s+/g, "");
+  mobileNumber = mobileNumber.trim().replace(/\s+/g, "");
 
   // Validation
   if (!name || !seatNumber || !mobileNumber || !paymentHistory) {
     return res.status(400).json({ message: "Please fill all fields" });
   }
-
-  name = name.trim().replace(/\s+/g, " "); // Trim and replace multiple spaces with a single space
-  seatNumber = seatNumber.trim().replace(/\s+/g, ""); // Trim seat number
-  mobileNumber = mobileNumber.trim().replace(/\s+/g, ""); // Trim mobile number
 
   try {
     // Create and save the student in the database
