@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 // Use local backend for development
-const API_URL = "https://library-backend-q0fy.onrender.com";
+const API_URL = "http://localhost:3000";
 
 const App = () => {
   const [studentsList, setStudentsList] = useState([]);
