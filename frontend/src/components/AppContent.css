@@ -1,0 +1,320 @@
+/* =========================
+   1. Global Styles
+========================= */
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background-color: #e2eafc;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+/* =========================
+     2. Header Styles
+  ========================= */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+.header-options {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.changeKey-button,
+.logout-button {
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.changeKey-button:hover,
+.logout-button:hover {
+  background-color: #0056b3;
+}
+
+/* =========================
+     3. Main Container
+  ========================= */
+
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  max-width: 1200px;
+  margin: 30px auto;
+  gap: 20px;
+  padding: 20px;
+}
+
+.left-section,
+.right-section {
+  flex: 1;
+  margin: 10px;
+}
+
+/* =========================
+     4. Form Styles
+  ========================= */
+
+.form {
+  margin-bottom: 30px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.form-title {
+  border-left: 5px solid #5a67d8;
+  padding-left: 10px;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+  background-color: #f7f9fc;
+  transition: border 0.3s ease;
+  color: #1a1a1d;
+}
+
+.input:focus {
+  border-color: #5a67d8;
+  outline: none;
+}
+
+.button {
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #5a67d8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #434190;
+}
+
+/* =========================
+     5. Student List Styles
+  ========================= */
+
+.students-list-container {
+  max-height: 1173px;
+  overflow-y: auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.students-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.student-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #f4f9ff;
+  border-bottom: 1px solid #ddd;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.student-row:nth-child(even) {
+  background-color: #e0ebff;
+}
+
+.student-row:hover {
+  background-color: #d0dfff;
+}
+
+.column-title {
+  font-weight: bold;
+  font-size: 18px;
+  text-align: left;
+  flex: 1;
+}
+
+.student-name,
+.student-seatNumber {
+  width: 45%;
+  font-size: 16px;
+}
+
+.student-item {
+  background-color: #f7f9fc;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+  position: relative;
+}
+
+.student-item:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.student-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.student-info {
+  font-size: 16px;
+  color: #333;
+  margin: 5px 0;
+  width: 100%;
+}
+
+.student-info:nth-child(odd) {
+  font-weight: bold;
+}
+
+.student-details {
+  margin-top: 10px;
+}
+
+.payment-history-title {
+  color: #5a67d8;
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.payment-info {
+  font-size: 16px;
+  color: #666;
+  margin: 3px 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: color 0.3s ease;
+}
+
+.close-button:hover {
+  color: #d9534f;
+}
+
+/* =========================
+     6. Messaging Styles
+  ========================= */
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.success-message {
+  color: green;
+  margin-top: 10px;
+}
+
+/* =========================
+     7. Responsive Styles
+  ========================= */
+
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    width: 95%;
+    margin: 20px auto;
+  }
+
+  .student-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .column-title {
+    font-size: 16px;
+  }
+
+  .student-name,
+  .student-seatNumber {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .student-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .student-info {
+    width: 100%;
+  }
+
+  .results-title {
+    font-size: 20px;
+  }
+
+  .payment-history-title {
+    font-size: 16px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-header .button {
+    margin: 10px 0 0 0;
+  }
+}
