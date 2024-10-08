@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import SignIn from "./components/signin";
 import AppContent from "./components/appcontent";
-import ChangeKey from "./components/ChangeKey";
+import ChangeKey from "./components/changeKey";
 
 
 const App = () => {
