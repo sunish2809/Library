@@ -1,10 +1,8 @@
-// frontend/src/App.jsx
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import SignIn from "./components/signIn";
-import AppContent from "./components/appcontent";
-import ChangeKey from "./components/changeKey";
-
+import SignIn from "./components/SignIn";         // Changed to PascalCase
+import AppContent from "./components/AppContent"; // Changed to PascalCase
+import ChangeKey from "./components/ChangeKey";   // Changed to PascalCase
 
 const App = () => {
   const navigate = useNavigate();
@@ -54,15 +52,10 @@ const App = () => {
           )
         }
       />
-      {/* <Route
-        path="/change-key"
-        element={
-          isAuthenticated ? <ChangeKey /> : <Navigate to="/signin" replace />
-        }
-      /> */}
       <Route path="*" element={<Navigate to="/signin" replace />} />
     </Routes>
   );
 };
 
 export default App;
+
