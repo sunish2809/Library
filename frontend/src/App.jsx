@@ -1,7 +1,7 @@
 // frontend/src/App.jsx
 import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import SignIn from "./components/signIn";
+import SignIn from "./components/signin";
 import AppContent from "./components/appcontent";
 import ChangeKey from "./components/changeKey";
 
