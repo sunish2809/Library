@@ -1,11 +1,10 @@
 // frontend/src/components/AppContent.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 import "./AppContent.css"; // Optional: Create and style as needed
 import ChangeKey from "./ChangeKey";
 
-const API_URL = "https://library-backend-dn66.onrender.com"; // Adjust if necessary
+const API_URL = "http://localhost:3000"; // Adjust if necessary
 
 const AppContent = ({ onLogout }) => {
   const [studentsList, setStudentsList] = useState([]);
@@ -25,7 +24,6 @@ const AppContent = ({ onLogout }) => {
     name: "",
     seatNumber: "",
   });
-  const navigate = useNavigate();
 
   const secretKey = localStorage.getItem("secretKey");
 

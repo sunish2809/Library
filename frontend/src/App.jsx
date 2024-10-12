@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import SignIn from "./components/SignIn";         // Changed to PascalCase
+import { createBrowserRouter } from "react-router-dom";
+import { RouterProvider, redirect } from "react-router-dom";
+import SignIn from "./components/SignIn";
 import AppContent from "./components/AppContent"; // Changed to PascalCase
-import ChangeKey from "./components/ChangeKey";   // Changed to PascalCase
+import { useState } from "react";
 
 const App = () => {
-  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     return localStorage.getItem("isAuthenticated") === "true";
   });
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/app");
-    } else {
-      navigate("/signin");
-    }
-  }, [isAuthenticated, navigate]);
 
   const handleLogin = () => {
     setIsAuthenticated(true);
@@ -27,35 +18,40 @@ const App = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("secretKey");
-    navigate("/signin");
   };
 
-  return (
-    <Routes>
-      <Route
-        path="/signin"
-        element={
-          isAuthenticated ? (
-            <Navigate to="/app" replace />
-          ) : (
-            <SignIn onLogin={handleLogin} />
-          )
+  const router = createBrowserRouter([
+    {
+      path: "/signin",
+      element: <SignIn onLogin={handleLogin} />,
+      loader: () => {
+        // Redirect to /app if the user is already authenticated
+        if (isAuthenticated) {
+          throw redirect("/app");
         }
-      />
-      <Route
-        path="/app"
-        element={
-          isAuthenticated ? (
-            <AppContent onLogout={handleLogout} />
-          ) : (
-            <Navigate to="/signin" replace />
-          )
+        return null; // Otherwise continue to signin page
+      },
+    },
+    {
+      path: "/app",
+      element: <AppContent onLogout={handleLogout} />,
+      loader: () => {
+        if (!isAuthenticated) {
+          throw redirect("/signin");
         }
-      />
-      <Route path="*" element={<Navigate to="/signin" replace />} />
-    </Routes>
-  );
+        return null;
+      },
+    },
+    {
+      path: "*",
+      loader: () => {
+        // Redirect all unmatched routes to signin
+        throw redirect("/signin");
+      },
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 };
 
 export default App;
-
