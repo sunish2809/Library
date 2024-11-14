@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const SecretKey = require("../models/SecretKey");
+const bcrypt = require('bcrypt');
 
 // @route   POST /api/auth/verify
 // @desc    Verify the secret key for authentication
@@ -14,7 +15,7 @@ router.post("/verify", async (req, res) => {
 
   try {
     const storedKey = await SecretKey.findOne();
-    console.log("check", storedKey.key);
+
     if (!storedKey) {
       return res.status(500).json({ message: "Secret key is not set up" });
     }
@@ -24,6 +25,7 @@ router.post("/verify", async (req, res) => {
     } else {
       return res.status(401).json({ message: "Invalid secret key" });
     }
+    
   } catch (error) {
     res.status(500).json({ message: "Error verifying secret key", error });
   }
@@ -54,8 +56,11 @@ router.post("/change-key", verifySecretKey, async (req, res) => {
         .status(401)
         .json({ message: "Current secret key is incorrect" });
     }
+    
+
 
     storedKey.key = newKey;
+
     await storedKey.save();
 
     res.json({ message: "Secret key updated successfully" });
