@@ -5,10 +5,10 @@ const verifySecretKey = require("../middleware/auth");
 
 // POST route to add a student
 router.post("/", verifySecretKey, async (req, res) => {
-  let { name, seatNumber, mobileNumber, paymentHistory } = req.body;
+  let { name, seatNumber, mobileNumber,aadharNumber, paymentHistory,dueAmount} = req.body;
 
   // Validation
-  if (!name || !seatNumber || !mobileNumber || !paymentHistory) {
+  if (!name || !seatNumber || !mobileNumber ||!aadharNumber|| !paymentHistory||!dueAmount) {
     return res.status(400).json({ message: "Please fill all fields" });
   }
 
@@ -22,7 +22,9 @@ router.post("/", verifySecretKey, async (req, res) => {
       name,
       seatNumber,
       mobileNumber,
+      aadharNumber,
       paymentHistory,
+      dueAmount,
     });
     await newStudent.save();
     res
@@ -65,14 +67,14 @@ router.put("/payment/seat/:seatNumber", verifySecretKey, async (req, res) => {
 });
 
 // GET route to retrieve students by name
-router.get("/name/:name", verifySecretKey, async (req, res) => {
-  const { name } = req.params;
+router.get("/name/:seatNumber", verifySecretKey, async (req, res) => {
+  const { seatNumber } = req.params;
 
   try {
-    const trimmedName = name.trim().replace(/\s+/g, " ");
+    //const trimmedseatNumber = seatNumber.trim().replace(/\s+/g, " ");
 
     const students = await Student.find({
-      name: { $regex: new RegExp(trimmedName, "i") },
+      seatNumber: parseInt(seatNumber),
     });
 
     if (!students.length) {
@@ -122,7 +124,9 @@ router.delete("/:name/:seatNumber", verifySecretKey, async (req, res) => {
 router.get("/all", verifySecretKey, async (req, res) => {
   try {
     // Fetch all students and project only the name and seatNumber fields
-    const students = await Student.find({}, { name: 1, seatNumber: 1, _id: 0 });
+    //const students = await Student.find({}, { name: 1, seatNumber: 1, _id: 0 });
+    const students = await Student.find({}, { name: 1, seatNumber: 1, paymentHistory: 1, _id: 0 });
+
 
     if (!students.length) {
       return res.status(404).json({ message: "No students found" });

@@ -10,7 +10,6 @@ const ChangeKey = ({ handleClose }) => {
   const [newKey, setNewKey] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Use useNavigate instead of useHistory
 
   const secretKey = localStorage.getItem("secretKey");
 

@@ -1,7 +1,6 @@
 // frontend/src/components/AppContent.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
 import "./AppContent.css"; // Optional: Create and style as needed
 import ChangeKey from "./ChangeKey";
 
@@ -13,7 +12,9 @@ const AppContent = ({ onLogout }) => {
     name: "",
     seatNumber: "",
     mobileNumber: "",
+    aadharNumber: "",
     paymentHistory: [{ amountPaid: "" }],
+    dueAmount: "",
   });
   const [searchName, setSearchName] = useState("");
   const [students, setStudents] = useState([]);
@@ -25,7 +26,6 @@ const AppContent = ({ onLogout }) => {
     name: "",
     seatNumber: "",
   });
-  const navigate = useNavigate();
 
   const secretKey = localStorage.getItem("secretKey");
 
@@ -72,7 +72,9 @@ const AppContent = ({ onLogout }) => {
         name: "",
         seatNumber: "",
         mobileNumber: "",
+        aadharNumber: "",
         paymentHistory: [{ amountPaid: "" }],
+        dueAmount: "",
       });
       fetchStudentsList(); // Refresh the students list
     } catch (error) {
@@ -193,7 +195,7 @@ const AppContent = ({ onLogout }) => {
         <header className="dashboard-header">
           <h1 className="title">Library Management System</h1>
           <div className="header-options">
-            <button onClick={handleChangeKey} className="changeKey-button">
+            <button onClick={handleChangeKey} className="changekey-button">
               Change Key
             </button>
             <button onClick={onLogout} className="logout-button">
@@ -204,156 +206,206 @@ const AppContent = ({ onLogout }) => {
         <div className="main-container">
           <div className="left-section">
             {/* Add Student Form */}
-            <form className="form add-student-form" onSubmit={addStudent}>
-              <h2 className="form-title">Add Student</h2>
-              <input
-                type="text"
-                name="name"
-                className="input"
-                placeholder="Name"
-                value={studentData.name}
-                onChange={handleStudentChange}
-                required
-              />
-              <input
-                type="number"
-                name="seatNumber"
-                className="input"
-                placeholder="Seat Number"
-                value={studentData.seatNumber}
-                onChange={handleStudentChange}
-                required
-              />
-              <input
-                type="text"
-                name="mobileNumber"
-                className="input"
-                placeholder="Mobile Number"
-                value={studentData.mobileNumber}
-                onChange={handleStudentChange}
-                required
-              />
-              <input
-                type="number"
-                name="amountPaid"
-                className="input"
-                placeholder="Amount Paid"
-                value={studentData.paymentHistory[0]?.amountPaid || ""}
-                onChange={handlePaymentHistoryChange}
-                required
-              />
-              <button className="button" type="submit">
-                Add Student
-              </button>
-            </form>
+            <div className="left-divide-add">
+              <form className="form add-student-form" onSubmit={addStudent}>
+                <h2 className="form-title">Add Student</h2>
+                <input
+                  type="text"
+                  name="name"
+                  className="input"
+                  placeholder="Name"
+                  value={studentData.name}
+                  onChange={handleStudentChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="seatNumber"
+                  className="input"
+                  placeholder="Seat Number"
+                  value={studentData.seatNumber}
+                  onChange={handleStudentChange}
+                  required
+                />
+                <input
+                  type="text"
+                  name="mobileNumber"
+                  className="input"
+                  placeholder="Mobile Number"
+                  value={studentData.mobileNumber}
+                  onChange={handleStudentChange}
+                  required
+                />
+                <input
+                  type="text"
+                  name="aadharNumber"
+                  className="input"
+                  placeholder="Aadhar Number"
+                  value={studentData.aadharNumber}
+                  onChange={handleStudentChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="amountPaid"
+                  className="input"
+                  placeholder="Amount Paid"
+                  value={studentData.paymentHistory[0]?.amountPaid || ""}
+                  onChange={handlePaymentHistoryChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="dueAmount"
+                  className="input"
+                  placeholder="Due Amount"
+                  value={studentData.dueAmount}
+                  onChange={handleStudentChange}
+                  required
+                />
+                <button className="button" type="submit">
+                  Add Student
+                </button>
+              </form>
+              {changeKey && <ChangeKey handleClose={handleClose}></ChangeKey>}
+            </div>
 
-            {/* Search Student Form */}
-            <form className="form search-form" onSubmit={searchStudentByName}>
-              <h2 className="form-title">Search Student by Name</h2>
-              <input
-                type="text"
-                className="input"
-                value={searchName}
-                onChange={(e) => setSearchName(e.target.value)}
-                placeholder="Enter student name"
-                required
-              />
-              <button className="button" type="submit">
-                Search
-              </button>
-            </form>
+            <div className="left-divide">
+              {/* Search Student Form */}
+              <form className="form search-form" onSubmit={searchStudentByName}>
+                <h2 className="form-title">Search Student by Seat Number</h2>
+                <input
+                  type="text"
+                  className="input"
+                  value={searchName}
+                  onChange={(e) => setSearchName(e.target.value)}
+                  placeholder="Enter Seat Number"
+                  required
+                />
+                <button className="button" type="submit">
+                  Search
+                </button>
+              </form>
 
-            {/* Search Results */}
-            {students.length > 0 && (
-              <div className="student-results">
-                <h3 className="results-title">Search Results:</h3>
-                {students.map((student) => (
-                  <div key={student._id} className="student-item">
-                    <div className="student-header">
-                      <p className="student-info">Name: {student.name}</p>
-                      <p className="student-info">
-                        Seat Number: {student.seatNumber}
-                      </p>
-                      <p className="student-info">
-                        Mobile Number: {student.mobileNumber}
-                      </p>
-                    </div>
-                    <div className="student-details">
-                      <h4 className="payment-history-title">
-                        Payment History:
-                      </h4>
-                      {student.paymentHistory.map((payment, index) => (
-                        <p key={index} className="payment-info">
-                          ₹{payment.amountPaid} (Paid on:{" "}
-                          {new Date(payment.paymentDate).toLocaleDateString()})
+              {/* Search Results */}
+              {students.length > 0 && (
+                <div className="student-results">
+                  <h3 className="results-title">Search Results:</h3>
+                  {students.map((student) => (
+                    <div key={student._id} className="student-item">
+                      <div className="student-header">
+                        <p className="student-info">Name: {student.name}</p>
+                        <p className="student-info">
+                          Seat Number: {student.seatNumber}
                         </p>
-                      ))}
+                        <p className="student-info">
+                          Mobile Number: {student.mobileNumber}
+                        </p>
+                        <p className="student-info">
+                          Aadhar Number: {student.aadharNumber}
+                        </p>
+                        <p className="student-info">
+                          Due Amount: {student.dueAmount}
+                        </p>
+                      </div>
+                      <div className="student-details">
+                        <h4 className="payment-history-title">
+                          Payment History:
+                        </h4>
+                        {student.paymentHistory.map((payment, index) => (
+                          <p key={index} className="payment-info">
+                            ₹{payment.amountPaid} (Paid on:{" "}
+                            {new Date(payment.paymentDate).toLocaleDateString()}
+                            )
+                          </p>
+                        ))}
+                        {student.paymentHistory.length > 0 && (
+                          <p className="expiry-info">
+                            Expiry Date:{" "}
+                            {new Date(
+                              new Date(
+                                student.paymentHistory[
+                                  student.paymentHistory.length - 1
+                                ].paymentDate
+                              ).getTime() +
+                                30 * 24 * 60 * 60 * 1000
+                            ).toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+                      <button
+                        className="close-button"
+                        onClick={() => closeStudentDetails(student._id)}
+                      >
+                        &#10005;
+                      </button>
                     </div>
-                    <button
-                      className="close-button"
-                      onClick={() => closeStudentDetails(student._id)}
-                    >
-                      &#10005;
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
 
-            {/* Update Payment Form */}
-            <form className="form update-payment-form" onSubmit={updatePayment}>
-              <h2 className="form-title">Update Payment</h2>
-              <input
-                type="number"
-                name="seatNumber"
-                className="input"
-                placeholder="Seat Number"
-                value={paymentUpdate.seatNumber}
-                onChange={handlePaymentUpdateChange}
-                required
-              />
-              <input
-                type="number"
-                name="amountPaid"
-                className="input"
-                placeholder="Amount Paid"
-                value={paymentUpdate.amountPaid}
-                onChange={handlePaymentUpdateChange}
-                required
-              />
-              <button className="button" type="submit">
-                Update Payment
-              </button>
-            </form>
+              {/* Update Payment Form */}
+              <form
+                className="form update-payment-form"
+                onSubmit={updatePayment}
+              >
+                <h2 className="form-title">Update Payment</h2>
+                <input
+                  type="number"
+                  name="seatNumber"
+                  className="input"
+                  placeholder="Seat Number"
+                  value={paymentUpdate.seatNumber}
+                  onChange={handlePaymentUpdateChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="amountPaid"
+                  className="input"
+                  placeholder="Amount Paid"
+                  value={paymentUpdate.amountPaid}
+                  onChange={handlePaymentUpdateChange}
+                  required
+                />
+                <button className="button" type="submit">
+                  Update Payment
+                </button>
+              </form>
 
-            {/* Delete Student Form */}
-            <form className="form delete-student-form" onSubmit={deleteStudent}>
-              <h2 className="form-title">Delete Student</h2>
-              <input
-                type="text"
-                name="name"
-                className="input"
-                placeholder="Name"
-                value={deleteData.name}
-                onChange={handleDeleteChange}
-                required
-              />
-              <input
-                type="number"
-                name="seatNumber"
-                className="input"
-                placeholder="Seat Number"
-                value={deleteData.seatNumber}
-                onChange={handleDeleteChange}
-                required
-              />
-              <button className="button" type="submit">
-                Delete Student
-              </button>
-            </form>
+              {/* Delete Student Form */}
+              <form
+                className="form delete-student-form"
+                onSubmit={deleteStudent}
+              >
+                <h2 className="form-title">Delete Student</h2>
+                <input
+                  type="text"
+                  name="name"
+                  className="input"
+                  placeholder="Name"
+                  value={deleteData.name}
+                  onChange={handleDeleteChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="seatNumber"
+                  className="input"
+                  placeholder="Seat Number"
+                  value={deleteData.seatNumber}
+                  onChange={handleDeleteChange}
+                  required
+                />
+                <button className="button" type="submit">
+                  Delete Student
+                </button>
+              </form>
+            </div>
           </div>
 
           {/* All Students List */}
+
           <div className="right-section">
             <div className="students-list-container">
               <h2>All Students</h2>
@@ -364,17 +416,43 @@ const AppContent = ({ onLogout }) => {
                 </div>
                 {studentsList
                   .sort((a, b) => a.name.localeCompare(b.name))
-                  .map((student) => (
-                    <div key={student.seatNumber} className="student-row">
-                      <div className="student-name">{student.name}</div>
-                      <div className="student-seatNumber">
-                        {student.seatNumber}
+                  .map((student) => {
+                    const paymentHistory = student.paymentHistory || [];
+                    const lastPaymentDate =
+                      paymentHistory.length > 0
+                        ? new Date(
+                            paymentHistory[
+                              paymentHistory.length - 1
+                            ].paymentDate
+                          )
+                        : null;
+                    const expiryDate = lastPaymentDate
+                      ? new Date(
+                          lastPaymentDate.getTime() + 30 * 24 * 60 * 60 * 1000
+                        )
+                      : null;
+                    const daysLeft = expiryDate
+                      ? Math.ceil(
+                          (expiryDate - new Date()) / (24 * 60 * 60 * 1000)
+                        )
+                      : null;
+                    const isExpiringSoon = daysLeft !== null && daysLeft <= 3;
+                    return (
+                      <div
+                        key={student.seatNumber}
+                        className={`student-row ${
+                          isExpiringSoon ? "highlight-expiry" : ""
+                        }`}
+                      >
+                        <div className="student-name">{student.name}</div>
+                        <div className="student-seatNumber">
+                          {student.seatNumber}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
               </div>
             </div>
-            {changeKey && <ChangeKey handleClose={handleClose}></ChangeKey>}
           </div>
         </div>
       </div>
