@@ -5,10 +5,10 @@ const verifySecretKey = require("../middleware/auth");
 
 // POST route to add a student
 router.post("/", verifySecretKey, async (req, res) => {
-  let { name, seatNumber, mobileNumber,aadharNumber, paymentHistory,dueAmount} = req.body;
+  let { name, seatNumber, mobileNumber,aadharNumber, paymentHistory,dueDate,dueAmount} = req.body;
 
   // Validation
-  if (!name || !seatNumber || !mobileNumber ||!aadharNumber|| !paymentHistory||!dueAmount) {
+  if (!name || !seatNumber || !mobileNumber ||!aadharNumber|| !paymentHistory||!dueDate||!dueAmount) {
     return res.status(400).json({ message: "Please fill all fields" });
   }
 
@@ -24,6 +24,7 @@ router.post("/", verifySecretKey, async (req, res) => {
       mobileNumber,
       aadharNumber,
       paymentHistory,
+      dueDate,
       dueAmount,
     });
     await newStudent.save();
@@ -44,8 +45,9 @@ router.put("/payment/seat/:seatNumber", verifySecretKey, async (req, res) => {
   const { seatNumber } = req.params;
   const { amountPaid } = req.body;
   const {dueAmount} = req.body;
+  const {dueDate}= req.body;
 
-  if (amountPaid === undefined || dueAmount===undefined) {
+  if (amountPaid === undefined || dueAmount===undefined||dueDate===undefined) {
     return res.status(400).json({ message: "Please provide amountPaid and dueAmount" });
   }
 
@@ -60,6 +62,7 @@ router.put("/payment/seat/:seatNumber", verifySecretKey, async (req, res) => {
     // Update the student's payment history and due amount
     student.paymentHistory.push({ amountPaid });
     student.dueAmount = dueAmount;
+    student.dueDate= dueDate;
 
     // Save the updated student document
     await student.save();
@@ -129,8 +132,7 @@ router.get("/all", verifySecretKey, async (req, res) => {
   try {
     // Fetch all students and project only the name and seatNumber fields
     //const students = await Student.find({}, { name: 1, seatNumber: 1, _id: 0 });
-    const students = await Student.find({}, { name: 1, seatNumber: 1, paymentHistory: 1, _id: 0 });
-
+    const students = await Student.find({}, { name: 1, seatNumber: 1, paymentHistory: 1, dueDate:1,_id: 0 });
 
     if (!students.length) {
       return res.status(404).json({ message: "No students found" });

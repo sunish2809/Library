@@ -10,7 +10,8 @@ const studentSchema = new mongoose.Schema({
       amountPaid: { type: Number, required: true },
       paymentDate: { type: Date, default: Date.now },
     },
-  ],
+  ], 
+  dueDate: { type: Date, required: true },
   dueAmount:{ type: Number, required: true, /*unique: true */},
 });
 

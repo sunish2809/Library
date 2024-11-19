@@ -15,7 +15,8 @@ const AppContent = ({ onLogout }) => {
     seatNumber: "",
     mobileNumber: "",
     aadharNumber: "",
-    paymentHistory: [{ amountPaid: "" }],
+    paymentHistory: [{ amountPaid: ""}],
+    dueDate:"",
     dueAmount: "",
   });
   const [searchName, setSearchName] = useState("");
@@ -24,6 +25,7 @@ const AppContent = ({ onLogout }) => {
     seatNumber: "",
     amountPaid: "",
     dueAmount:"",
+    dueDate:"",
   });
   const [deleteData, setDeleteData] = useState({
     name: "",
@@ -46,6 +48,7 @@ const AppContent = ({ onLogout }) => {
       paymentHistory: [{ ...studentData.paymentHistory[0], [name]: value }],
     });
   };
+
 
   // Handle payment update input changes
   const handlePaymentUpdateChange = (e) => {
@@ -76,7 +79,8 @@ const AppContent = ({ onLogout }) => {
         seatNumber: "",
         mobileNumber: "",
         aadharNumber: "",
-        paymentHistory: [{ amountPaid: "" }],
+        paymentHistory: [{ amountPaid: ""}],
+        dueDate:"",
         dueAmount: "",
       });
       fetchStudentsList(); // Refresh the students list
@@ -119,13 +123,14 @@ const AppContent = ({ onLogout }) => {
         {
           amountPaid: paymentUpdate.amountPaid,
           dueAmount:paymentUpdate.dueAmount,
+          dueDate:paymentUpdate.dueDate,
         },
         {
           headers: { "x-secret-key": secretKey },
         }
       );
       alert(response.data.message);
-      setPaymentUpdate({ seatNumber: "", amountPaid: "",dueAmount:"" });
+      setPaymentUpdate({ seatNumber: "", amountPaid: "",dueAmount:"" ,dueDate:""});
       fetchStudentsList(); // Refresh the students list
     } catch (error) {
       const errMsg = error.response
@@ -178,7 +183,6 @@ const AppContent = ({ onLogout }) => {
       }
     }
   };
-
   useEffect(() => {
     fetchStudentsList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -259,6 +263,15 @@ const AppContent = ({ onLogout }) => {
                   required
                 />
                 <input
+                  type="date"
+                  name="dueDate"
+                  className="input"
+                  placeholder="Due Date"
+                  value={studentData.dueDate}
+                  onChange={handleStudentChange}
+                  required
+                />
+                <input
                   type="number"
                   name="dueAmount"
                   className="input"
@@ -325,15 +338,16 @@ const AppContent = ({ onLogout }) => {
                         ))}
                         {student.paymentHistory.length > 0 && (
                           <p className="expiry-info">
-                            Expiry Date:{" "}
-                            {new Date(
+                            {/* Expiry Date:{" "} */}
+                            Expiry Date: {new Date(student.dueDate).toLocaleDateString("en-GB")}
+                            {/* {new Date(
                               new Date(
                                 student.paymentHistory[
                                   student.paymentHistory.length - 1
                                 ].paymentDate
                               ).getTime() +
                                 30 * 24 * 60 * 60 * 1000
-                            ).toLocaleDateString()}
+                            ).toLocaleDateString()} */}
                           </p>
                         )}
                       </div>
@@ -378,6 +392,15 @@ const AppContent = ({ onLogout }) => {
                   className="input"
                   placeholder="Due Amount"
                   value={paymentUpdate.dueAmount}
+                  onChange={handlePaymentUpdateChange}
+                  required
+                />
+                <input
+                  type="date"
+                  name="dueDate"
+                  className="input"
+                  placeholder="Due Date"
+                  value={paymentUpdate.dueDate}
                   onChange={handlePaymentUpdateChange}
                   required
                 />
@@ -430,26 +453,36 @@ const AppContent = ({ onLogout }) => {
                 {studentsList
                   .sort((a, b) => a.name.localeCompare(b.name))
                   .map((student) => {
-                    const paymentHistory = student.paymentHistory || [];
-                    const lastPaymentDate =
-                      paymentHistory.length > 0
-                        ? new Date(
-                            paymentHistory[
-                              paymentHistory.length - 1
-                            ].paymentDate
-                          )
-                        : null;
-                    const expiryDate = lastPaymentDate
-                      ? new Date(
-                          lastPaymentDate.getTime() + 30 * 24 * 60 * 60 * 1000
-                        )
-                      : null;
-                    const daysLeft = expiryDate
-                      ? Math.ceil(
-                          (expiryDate - new Date()) / (24 * 60 * 60 * 1000)
-                        )
-                      : null;
-                    const isExpiringSoon = daysLeft !== null && daysLeft <= 3;
+                    // const paymentHistory = student.paymentHistory || [];
+                    // const lastPaymentDate =
+                    //   paymentHistory.length > 0
+                    //     ? new Date(
+                    //         paymentHistory[
+                    //           paymentHistory.length - 1
+                    //         ].paymentDate
+                    //       )
+                    //     : null;
+                    // const expiryDate = lastPaymentDate
+                    //   ? new Date(
+                    //       lastPaymentDate.getTime() + 30 * 24 * 60 * 60 * 1000
+                    //     )
+                    //   : null;
+                    // const expiryDate = student.dueDate
+                    // console.log("expiry",expiryDate)
+                    // const daysLeft = expiryDate
+                    //   ? Math.ceil(
+                    //       (expiryDate - new Date()) / (24 * 60 * 60 * 1000)
+                    //     )
+                    //   : null;
+                    // const isExpiringSoon = daysLeft !== null && daysLeft <= 3;
+                    // console.log("dayleft",daysLeft)
+                    const expiryDate = student.dueDate;
+                    const parsedDate = Date.parse(expiryDate);
+
+                      const daysLeft = Math.ceil((parsedDate - new Date()) / (24 * 60 * 60 * 1000));
+                      const isExpiringSoon = daysLeft !== null && daysLeft <= 3;
+
+
                     return (
                       <div
                         key={student.seatNumber}
