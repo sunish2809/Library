@@ -43,26 +43,30 @@ router.post("/", verifySecretKey, async (req, res) => {
 router.put("/payment/seat/:seatNumber", verifySecretKey, async (req, res) => {
   const { seatNumber } = req.params;
   const { amountPaid } = req.body;
+  const {dueAmount} = req.body;
 
-  if (amountPaid === undefined) {
-    return res.status(400).json({ message: "Please provide amountPaid" });
+  if (amountPaid === undefined || dueAmount===undefined) {
+    return res.status(400).json({ message: "Please provide amountPaid and dueAmount" });
   }
 
   try {
-    // Find student by seat number and update payment history
-    const student = await Student.findOneAndUpdate(
-      { seatNumber: parseInt(seatNumber) },
-      { $push: { paymentHistory: { amountPaid } } },
-      { new: true }
-    );
+    // Find the student by seat number
+    const student = await Student.findOne({ seatNumber: parseInt(seatNumber) });
 
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
 
-    res.json({ message: "Payment updated successfully", student });
+    // Update the student's payment history and due amount
+    student.paymentHistory.push({ amountPaid });
+    student.dueAmount = dueAmount;
+
+    // Save the updated student document
+    await student.save();
+
+    res.json({ message: "Payment and due amount updated successfully", student });
   } catch (error) {
-    res.status(500).json({ message: "Error updating payment", error });
+    res.status(500).json({ message: "Error updating payment and due amount", error });
   }
 });
 

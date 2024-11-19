@@ -23,6 +23,7 @@ const AppContent = ({ onLogout }) => {
   const [paymentUpdate, setPaymentUpdate] = useState({
     seatNumber: "",
     amountPaid: "",
+    dueAmount:"",
   });
   const [deleteData, setDeleteData] = useState({
     name: "",
@@ -117,13 +118,14 @@ const AppContent = ({ onLogout }) => {
         `${API_URL}/api/students/payment/seat/${paymentUpdate.seatNumber}`,
         {
           amountPaid: paymentUpdate.amountPaid,
+          dueAmount:paymentUpdate.dueAmount,
         },
         {
           headers: { "x-secret-key": secretKey },
         }
       );
       alert(response.data.message);
-      setPaymentUpdate({ seatNumber: "", amountPaid: "" });
+      setPaymentUpdate({ seatNumber: "", amountPaid: "",dueAmount:"" });
       fetchStudentsList(); // Refresh the students list
     } catch (error) {
       const errMsg = error.response
@@ -367,6 +369,15 @@ const AppContent = ({ onLogout }) => {
                   className="input"
                   placeholder="Amount Paid"
                   value={paymentUpdate.amountPaid}
+                  onChange={handlePaymentUpdateChange}
+                  required
+                />
+                <input
+                  type="number"
+                  name="dueAmount"
+                  className="input"
+                  placeholder="Due Amount"
+                  value={paymentUpdate.dueAmount}
                   onChange={handlePaymentUpdateChange}
                   required
                 />
