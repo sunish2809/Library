@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const SecretKey = require("../models/SecretKey");
-const bcrypt = require('bcrypt');
 
 // @route   POST /api/auth/verify
 // @desc    Verify the secret key for authentication
